@@ -186,6 +186,8 @@ whcyit.Pagination = whcyit.create({
     if (this.pageNum > this.pageCount) {
       this.pageNum = this.pageCount;
     }
+
+    return this.pageNum;
   },
   skip: function () {
     return (this.pageNum - 1) * this.pageSize;
