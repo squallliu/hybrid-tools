@@ -183,10 +183,6 @@ whcyit.Pagination = whcyit.create({
 
     this.hasNext = this.pageNum <= this.pageCount;
 
-    if (this.pageNum > this.pageCount) {
-      this.pageNum = this.pageCount;
-    }
-
     return this.pageNum;
   },
   skip: function () {
