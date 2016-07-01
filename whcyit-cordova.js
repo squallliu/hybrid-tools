@@ -144,13 +144,18 @@ whcyitCordovaModule.services.persistenceMananger = whcyit.create({
   init: function ($q) {
     this.$q = $q;
   },
-  schemaSync: function (dbname, defines, isDebug) {
+  open: function (dbname) {
+    persistence.store.cordovasql.config(
+      persistence, dbname, '0.0.1', 'App database', 5 * 1024 * 1024, 0
+    );
+  },
+  close: function (fn) {
+    persistence.db.conn.close(fn);
+  },
+  schemaSync: function (defines, isDebug) {
     var me = this;
     return this.$q(function (resolve, reject) {
       persistence.debug = isDebug ? true : false;
-      persistence.store.cordovasql.config(
-        persistence, dbname, '0.0.1', 'App database', 5 * 1024 * 1024, 0
-      );
 
       angular.forEach(defines, function (define) {
         me[define.name] = persistence.define(define.name, define.struct);
