@@ -662,7 +662,7 @@ whcyitModule.directivies = {
           if (focus) {
             $timeout(function () {
               $element[0].focus();
-            }, 500);
+            }, 500, false);
           }
         });
 
