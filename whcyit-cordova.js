@@ -145,6 +145,8 @@ whcyitCordovaModule.services.persistenceMananger = whcyit.create({
     this.$q = $q;
   },
   open: function (dbname) {
+    persistence.clean();
+
     persistence.store.cordovasql.config(
       persistence, dbname, '0.0.1', 'App database', 5 * 1024 * 1024, 0
     );
