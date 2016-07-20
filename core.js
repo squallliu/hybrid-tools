@@ -162,6 +162,16 @@ var whcyit = {
   },
   getViewByRoot: function (ionicHistory, stateId) {
     return this.getViewByHistory(ionicHistory, 'root', stateId);
+  },
+  getView: function (ionicHistory, stateId) {
+    for (var historyId in ionicHistory.viewHistory().histories) {
+      var result = this.getViewByHistory(ionicHistory, historyId, stateId);
+      if (result != null) {
+        return result;
+      }
+    }
+
+    return null;
   }
 };
 
@@ -662,7 +672,7 @@ whcyitModule.directivies = {
           if (focus) {
             $timeout(function () {
               $element[0].focus();
-            }, 500, false);
+            }, 500);
           }
         });
 
