@@ -75,17 +75,13 @@ whcyitCordovaModule.services.networkStateService = whcyit.create({
     return this.$cordovaNetwork.getNetwork();
   },
   watch: function (online, offline) {
-    this.$rootScope.$on('$cordovaNetwork:online', angular.bind(this, function (event, networkState) {
-      if (online) {
-        online(event, networkState);
-      }
-    }));
+    if (online) {
+      this.$rootScope.$on('$cordovaNetwork:online', angular.bind(this, online));
+    }
 
-    this.$rootScope.$on('$cordovaNetwork:offline', angular.bind(this, function (event, networkState) {
-      if (offline) {
-        offline(event, networkState);
-      }
-    }));
+    if (offline) {
+      this.$rootScope.$on('$cordovaNetwork:offline', angular.bind(this, offline));
+    }
   },
   stop: function () {
     this.$cordovaNetwork.clearOnlineWatch();
@@ -146,7 +142,6 @@ whcyitCordovaModule.services.persistenceMananger = whcyit.create({
   },
   open: function (dbname) {
     persistence.clean();
-
     persistence.store.cordovasql.config(
       persistence, dbname, '0.0.1', 'App database', 5 * 1024 * 1024, 0
     );
