@@ -76,11 +76,11 @@ whcyitCordovaModule.services.networkStateService = whcyit.create({
   },
   watch: function (online, offline) {
     if (online) {
-      this.$rootScope.$on('$cordovaNetwork:online', angular.bind(this, online));
+      this.$rootScope.$on('$cordovaNetwork:online', online);
     }
 
     if (offline) {
-      this.$rootScope.$on('$cordovaNetwork:offline', angular.bind(this, offline));
+      this.$rootScope.$on('$cordovaNetwork:offline', offline);
     }
   },
   stop: function () {
