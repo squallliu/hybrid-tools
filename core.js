@@ -162,16 +162,6 @@ var whcyit = {
   },
   getViewByRoot: function (ionicHistory, stateId) {
     return this.getViewByHistory(ionicHistory, 'root', stateId);
-  },
-  getView: function (ionicHistory, stateId) {
-    for (var historyId in ionicHistory.viewHistory().histories) {
-      var result = this.getViewByHistory(ionicHistory, historyId, stateId);
-      if (result != null) {
-        return result;
-      }
-    }
-
-    return null;
   }
 };
 
@@ -193,7 +183,9 @@ whcyit.Pagination = whcyit.create({
 
     this.hasNext = this.pageNum <= this.pageCount;
 
-    return this.pageNum;
+    if (this.pageNum > this.pageCount) {
+      this.pageNum = this.pageCount;
+    }
   },
   skip: function () {
     return (this.pageNum - 1) * this.pageSize;
@@ -457,8 +449,10 @@ whcyitModule.providers.cyUtils = function () {
         var me = this;
         this.ajax(opts, function (result, xhr) {
           if (result.status != 0) {
+            if (failFn && failFn(result)) {
+              return;
+            }
             me.alert(result.msg);
-            failFn && failFn(result);
             return;
           }
           doneFn && doneFn(result, xhr);
@@ -602,10 +596,10 @@ whcyitModule.providers.cyCors = function () {
         cyUtils.ajaxWithError(opts, doneFn, function (result, status, e) {
           if (result.data && result.data == whcyit.ticket_expired) {
             whcyit.eventBus.fire(whcyit.ticket_expired);
-            return;
+            return true;
           }
 
-          failFn && failFn(result, status, e);
+          return failFn && failFn(result, status, e);
         });
       },
       login: function (opts, doneFn, failFn) {
